@@ -1,0 +1,1364 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phạm Quang Huy | IT BA & PM</title>
+    <!-- Nhúng Font Awesome để sử dụng các biểu tượng -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Nhúng font Google Montserrat -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Định nghĩa biến CSS cho chế độ sáng */
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --text-primary: #333333;
+            --text-secondary: #6c757d;
+            --accent: #0984e3;
+            --accent-hover: #0673c5;
+            --border: #dee2e6;
+            --shadow: rgba(0, 0, 0, 0.1);
+            --card-bg: #ffffff;
+            --transition: all 0.3s ease;
+        }
+
+        /* Định nghĩa biến CSS cho chế độ tối */
+        [data-theme="dark"] {
+            --bg-primary: #212529;
+            --bg-secondary: #343a40;
+            --text-primary: #f8f9fa;
+            --text-secondary: #ced4da;
+            --accent: #00b0ff;
+            --accent-hover: #0091ea;
+            --border: #495057;
+            --shadow: rgba(0, 0, 0, 0.3);
+            --card-bg: #2d3436;
+        }
+
+        /* Reset CSS cơ bản */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        /* Thiết lập cho body */
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            transition: var(--transition);
+            overflow-x: hidden;
+        }
+
+        /* Thiết lập thanh header cố định */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1.5rem;
+            z-index: 1000;
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+            background-color: rgba(var(--bg-primary-rgb), 0.8);
+        }
+
+        /* Hiệu ứng header khi cuộn trang */
+        header.scrolled {
+            box-shadow: 0 5px 15px var(--shadow);
+            padding: 1rem;
+        }
+
+        /* Container chính giới hạn chiều rộng nội dung */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Thanh điều hướng */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Logo */
+        .logo h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        /* Liên kết điều hướng */
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: var(--transition);
+            font-weight: 500;
+            position: relative;
+        }
+
+        /* Hiệu ứng gạch chân khi hover vào liên kết */
+        .nav-links a:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--accent);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover:after {
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        /* Container cho nút chuyển đổi */
+        .toggle-container {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        /* Nút chuyển đổi chế độ sáng/tối */
+        .toggle-theme {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-primary);
+            font-size: 1.2rem;
+            transition: var(--transition);
+        }
+
+        .toggle-theme:hover {
+            color: var(--accent);
+            transform: rotate(30deg);
+        }
+
+        /* Nút chuyển đổi ngôn ngữ */
+        .toggle-lang {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-primary);
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .toggle-lang:hover {
+            color: var(--accent);
+        }
+
+        /* Phần hero/giới thiệu */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-top: 80px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Hiệu ứng gradient cho nền hero */
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 80% 30%, var(--accent), transparent 70%);
+            opacity: 0.1;
+            z-index: -1;
+        }
+
+        /* Nội dung phần hero */
+        .hero-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 2rem;
+            width: 100%;
+        }
+
+        /* Phần văn bản trong hero */
+        .hero-text {
+            flex: 1;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s ease forwards;
+        }
+
+        .hero-text h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .hero-text h1 span {
+            color: var(--accent);
+            display: block;
+        }
+
+        .hero-text p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        /* Phần hình ảnh trong hero */
+        .hero-image {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            opacity: 0;
+            transform: translateX(30px);
+            animation: fadeInRight 1s ease forwards 0.3s;
+        }
+
+        /* Hình ảnh cá nhân/avatar */
+        .profile-image {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            box-shadow: 0 20px 40px var(--shadow);
+            border: 5px solid var(--accent);
+            animation: morphing 15s ease-in-out infinite;
+            object-fit: cover; /* Đảm bảo hình ảnh không bị méo */
+        }
+
+        /* Hiệu ứng thay đổi hình dạng cho profile image */
+        @keyframes morphing {
+            0% {
+                border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            }
+            25% {
+                border-radius: 58% 42% 75% 25% / 76% 46% 54% 24%;
+            }
+            50% {
+                border-radius: 50% 50% 33% 67% / 55% 27% 73% 45%;
+            }
+            75% {
+                border-radius: 33% 67% 58% 42% / 63% 68% 32% 37%;
+            }
+            100% {
+                border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            }
+        }
+
+        /* Style cho nút */
+        .btn {
+            padding: 0.8rem 2rem;
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 132, 227, 0.3);
+        }
+
+        .btn i {
+            margin-right: 0.5rem;
+        }
+
+        /* Style chung cho các section */
+        .section {
+            padding: 6rem 0;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: var(--transition);
+        }
+
+        /* Khi section hiển thị (được kích hoạt bởi JavaScript) */
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Tiêu đề section */
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title h2 {
+            display: inline-block;
+            font-size: 2rem;
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
+        /* Gạch chân cho tiêu đề section */
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: -10px;
+            width: 50px;
+            height: 3px;
+            background-color: var(--accent);
+            transform: translateX(-50%);
+        }
+
+        /* Container cho phần about */
+        .about-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        /* Phần văn bản about */
+        .about-text {
+            flex: 2;
+            min-width: 300px;
+        }
+
+        .about-text p {
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Phần thông tin about */
+        .about-info {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        /* Các mục thông tin */
+        .info-item {
+            display: flex;
+            margin-bottom: 1rem;
+        }
+
+        .info-title {
+            width: 130px;
+            font-weight: 600;
+        }
+
+        .info-value {
+            color: var(--text-secondary);
+        }
+
+        /* Biểu tượng mạng xã hội */
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--accent);
+            color: white;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .social-icon:hover {
+            transform: translateY(-5px);
+            background-color: var(--accent-hover);
+        }
+
+        /* Timeline cho phần kinh nghiệm */
+        .timeline {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Đường kẻ giữa timeline */
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 3px;
+            background-color: var(--border);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -1.5px;
+        }
+
+        /* Mục timeline */
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            width: 50%;
+            animation: fadeIn 0.5s ease forwards;
+            opacity: 0;
+        }
+
+        /* Mục timeline bên phải */
+        .timeline-item:nth-child(even) {
+            left: 50%;
+        }
+
+        /* Chấm tròn trên timeline */
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: var(--accent);
+            border: 4px solid var(--bg-primary);
+            top: 15px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        /* Vị trí chấm tròn cho mục lẻ (bên trái) */
+        .timeline-item:nth-child(odd)::after {
+            right: -14px;
+        }
+
+        /* Vị trí chấm tròn cho mục chẵn (bên phải) */
+        .timeline-item:nth-child(even)::after {
+            left: -14px;
+        }
+
+        /* Nội dung timeline */
+        .timeline-content {
+            padding: 20px;
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px var(--shadow);
+            transition: var(--transition);
+        }
+
+        /* Hiệu ứng hover cho nội dung timeline */
+        .timeline-content:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px var(--shadow);
+        }
+
+        /* Năm trong timeline */
+        .timeline-year {
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Tiêu đề timeline */
+        .timeline-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Tên công ty trong timeline */
+        .timeline-company {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            font-style: italic;
+        }
+
+        /* Mô tả trong timeline */
+        .timeline-desc {
+            color: var(--text-secondary);
+        }
+
+        .timeline-desc ul {
+            padding-left: 1.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .timeline-desc li {
+            margin-bottom: 0.5rem;
+            line-height: 1.6;
+        }
+
+        /* Container cho phần kỹ năng */
+        .skills-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        /* Danh mục kỹ năng */
+        .skill-category {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px var(--shadow);
+            transition: var(--transition);
+        }
+
+        /* Hiệu ứng hover cho danh mục kỹ năng */
+        .skill-category:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px var(--shadow);
+        }
+
+        /* Tiêu đề danh mục kỹ năng */
+        .skill-category h3 {
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+        }
+
+        /* Mục kỹ năng */
+        .skill-item {
+            margin-bottom: 1.5rem;
+        }
+
+        /* Thông tin kỹ năng */
+        .skill-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .skill-name {
+            font-weight: 500;
+        }
+
+        .skill-percent {
+            color: var(--text-secondary);
+        }
+
+        /* Thanh tiến trình kỹ năng */
+        .skill-bar {
+            width: 100%;
+            height: 8px;
+            background-color: var(--bg-secondary);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        /* Phần đã hoàn thành của thanh tiến trình */
+        .skill-progress {
+            height: 100%;
+            background-color: var(--accent);
+            border-radius: 4px;
+            width: 0;
+            transition: width 1s ease;
+        }
+
+        /* Container cho phần liên hệ */
+        .contact-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        /* Thông tin liên hệ */
+        .contact-info {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px var(--shadow);
+            transition: var(--transition);
+        }
+
+        /* Hiệu ứng hover cho thông tin liên hệ */
+        .contact-info:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px var(--shadow);
+        }
+
+        /* Tiêu đề liên hệ */
+        .contact-title {
+            font-size: 1.3rem;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Mục liên hệ */
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Biểu tượng liên hệ */
+        .contact-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(9, 132, 227, 0.1);
+            color: var(--accent);
+            border-radius: 50%;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+
+        /* Văn bản liên hệ */
+        .contact-text {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .contact-text a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .contact-text a:hover {
+            color: var(--accent);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--bg-secondary);
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        footer p {
+            color: var(--text-secondary);
+        }
+
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Hiệu ứng animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Responsive design */
+        @media screen and (max-width: 992px) {
+            .hero-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .hero-image {
+                order: -1;
+            }
+
+            .profile-image {
+                max-width: 300px;
+            }
+
+            .hero-text h1 {
+                font-size: 2.5rem;
+            }
+
+            /* Điều chỉnh timeline cho màn hình nhỏ hơn */
+            .timeline::after {
+                left: 31px;
+            }
+
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+
+            .timeline-item:nth-child(even) {
+                left: 0;
+            }
+
+            .timeline-item::after {
+                left: 15px;
+            }
+
+            .timeline-item:nth-child(odd)::after {
+                right: auto;
+                left: 15px;
+            }
+
+            .timeline-item:nth-child(even)::after {
+                left: 15px;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero-text h1 {
+                font-size: 2rem;
+            }
+
+            .about-container, .contact-container {
+                flex-direction: column;
+            }
+        }
+
+        /* Nút menu mobile */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        @media screen and (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            /* Menu mobile */
+            .nav-links {
+                position: fixed;
+                top: 80px;
+                left: 0;
+                width: 100%;
+                background-color: var(--bg-primary);
+                flex-direction: column;
+                align-items: center;
+                padding: 2rem 0;
+                box-shadow: 0 5px 15px var(--shadow);
+                transform: translateY(-150%);
+                transition: var(--transition);
+                z-index: 999;
+            }
+
+            /* Hiển thị menu khi active */
+            .nav-links.active {
+                transform: translateY(0);
+                display: flex;
+            }
+        }
+
+        /* Preloader */
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .preloader.fade-out {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader {
+            width: 50px;
+            height: 50px;
+            border: 5px solid var(--bg-secondary);
+            border-radius: 50%;
+            border-top-color: var(--accent);
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Tùy chỉnh thanh cuộn */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-hover);
+        }
+
+        /* Biến CSS cho RGB để làm background có độ trong suốt */
+        [data-theme="light"] {
+            --bg-primary-rgb: 255, 255, 255;
+        }
+
+        [data-theme="dark"] {
+            --bg-primary-rgb: 33, 37, 41;
+        }
+    </style>
+</head>
+<body data-theme="light" data-lang="vi">
+    <!-- Preloader - Hiển thị trong quá trình tải trang -->
+    <div class="preloader">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Header - Thanh điều hướng cố định ở trên cùng -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <h1>PQH</h1>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#home" class="nav-link" data-vi="Trang chủ" data-en="Home">Trang chủ</a></li>
+                    <li><a href="#about" class="nav-link" data-vi="Giới thiệu" data-en="About">Giới thiệu</a></li>
+                    <li><a href="#experience" class="nav-link" data-vi="Kinh nghiệm" data-en="Experience">Kinh nghiệm</a></li>
+                    <li><a href="#skills" class="nav-link" data-vi="Kỹ năng" data-en="Skills">Kỹ năng</a></li>
+                    <li><a href="#contact" class="nav-link" data-vi="Liên hệ" data-en="Contact">Liên hệ</a></li>
+                </ul>
+                <div class="toggle-container">
+                    <button class="toggle-lang" data-vi="EN" data-en="VI">EN</button>
+                    <button class="toggle-theme">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button class="mobile-menu-btn">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section - Phần giới thiệu chính -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1 data-vi="Xin chào, tôi là <span>Phạm Quang Huy</span>" data-en="Hi, I'm <span>Pham Quang Huy</span>">Xin chào, tôi là <span>Phạm Quang Huy</span></h1>
+                    <p data-vi="IT Business Analyst & Project Manager với 4 năm kinh nghiệm chuyên nghiệp trong việc phát triển và triển khai các giải pháp CNTT." data-en="IT Business Analyst & Project Manager with 4 years of professional experience in developing and implementing IT solutions.">IT Business Analyst & Project Manager với 4 năm kinh nghiệm chuyên nghiệp trong việc phát triển và triển khai các giải pháp CNTT.</p>
+                    <a href="#contact" class="btn">
+                        <i class="fas fa-paper-plane"></i>
+                        <span data-vi="Liên hệ với tôi" data-en="Contact Me">Liên hệ với tôi</span>
+                    </a>
+                </div>
+                <div class="hero-image">
+                    <!-- Ảnh avatar sử dụng đường dẫn cố định -->
+                    <img src="avt.jpg.JPG" alt="Profile Image" class="profile-image">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section - Phần giới thiệu chi tiết -->
+    <section class="section" id="about">
+        <div class="container">
+            <div class="section-title">
+                <h2 data-vi="Giới Thiệu" data-en="About Me">Giới Thiệu</h2>
+            </div>
+            <div class="about-container">
+                <div class="about-text">
+                    <p data-vi="Chuyên viên Phân tích Nghiệp vụ CNTT tận tâm và chi tiết với 4 năm kinh nghiệm kết nối giữa nhu cầu kinh doanh và giải pháp kỹ thuật. Thành thạo trong việc thu thập yêu cầu, lập bản đồ quy trình và triển khai hệ thống với chuyên môn về nhân sự, quản lý dịch vụ và hệ thống thanh toán." data-en="Dedicated and detail-oriented IT Business Analyst with 4 years of experience bridging the gap between business needs and technical solutions. Proficient in requirements gathering, process mapping, and system implementation with expertise in HR, service management, and payment systems.">Chuyên viên Phân tích Nghiệp vụ CNTT tận tâm và chi tiết với 4 năm kinh nghiệm kết nối giữa nhu cầu kinh doanh và giải pháp kỹ thuật. Thành thạo trong việc thu thập yêu cầu, lập bản đồ quy trình và triển khai hệ thống với chuyên môn về nhân sự, quản lý dịch vụ và hệ thống thanh toán.</p>
+                    <p data-vi="Nền tảng vững chắc về phương pháp quản lý dự án với thành công đã được chứng minh trong việc triển khai các dự án phức tạp cho cả hệ thống doanh nghiệp và ứng dụng hướng đến khách hàng." data-en="Strong background in project management methodologies with proven success in delivering complex projects for both enterprise systems and customer-facing applications.">Nền tảng vững chắc về phương pháp quản lý dự án với thành công đã được chứng minh trong việc triển khai các dự án phức tạp cho cả hệ thống doanh nghiệp và ứng dụng hướng đến khách hàng.</p>
+                </div>
+                <div class="about-info">
+                    <div class="info-item">
+                        <div class="info-title" data-vi="Họ tên:" data-en="Full Name:">Họ tên:</div>
+                        <div class="info-value">Phạm Quang Huy</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-title" data-vi="Email:" data-en="Email:">Email:</div>
+                        <div class="info-value">huypq2607@gmail.com</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-title" data-vi="Điện thoại:" data-en="Phone:">Điện thoại:</div>
+                        <div class="info-value">097.261.7963</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-title" data-vi="Ngôn ngữ:" data-en="Languages:">Ngôn ngữ:</div>
+                        <div class="info-value" data-vi="Tiếng Việt (Bản ngữ), Tiếng Anh (Thành thạo)" data-en="Vietnamese (Native), English (Proficient)">Tiếng Việt (Bản ngữ), Tiếng Anh (Thành thạo)</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-title" data-vi="Chứng chỉ:" data-en="Certificate:">Chứng chỉ:</div>
+                        <div class="info-value" data-vi="Chứng chỉ Phân tích Nghiệp vụ CNTT - FPT Software, 2021" data-en="IT Business Analyst Certification - FPT Software, 2021">Chứng chỉ Phân tích Nghiệp vụ CNTT - FPT Software, 2021</div>
+                    </div>
+                    <!-- Icons mạng xã hội với FontAwesome -->
+                    <div class="social-icons">
+                        <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-github"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section - Phần kinh nghiệm làm việc -->
+    <section class="section" id="experience">
+        <div class="container">
+            <div class="section-title">
+                <h2 data-vi="Kinh Nghiệm Làm Việc" data-en="Work Experience">Kinh Nghiệm Làm Việc</h2>
+            </div>
+            <div class="timeline">
+                <!-- Mục kinh nghiệm 1 -->
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-year">2021 - Hiện tại</div>
+                        <h3 class="timeline-title" data-vi="Quản Lý Dự Án & Phân Tích Nghiệp Vụ" data-en="Project Manager & Business Analyst">Quản Lý Dự Án & Phân Tích Nghiệp Vụ</h3>
+                        <div class="timeline-company">30Shine</div>
+                        <div class="timeline-desc">
+                            <ul>
+                                <li data-vi="Lãnh đạo các nhóm đa chức năng trong việc phát triển và tối ưu hóa hệ thống quản lý tích hợp cho quy trình Nhân sự, Dịch vụ và Thanh toán" data-en="Led cross-functional teams in the development and optimization of integrated management systems for HR, Services, and Payment processes">Lãnh đạo các nhóm đa chức năng trong việc phát triển và tối ưu hóa hệ thống quản lý tích hợp cho quy trình Nhân sự, Dịch vụ và Thanh toán</li>
+                                <li data-vi="Dẫn đầu việc triển khai AI để phân tích thị trường và thông tin cạnh tranh" data-en="Spearheaded AI implementation for market analysis and competitive intelligence">Dẫn đầu việc triển khai AI để phân tích thị trường và thông tin cạnh tranh</li>
+                                <li data-vi="Triển khai phương pháp Scrum để quản lý vòng đời dự án, rút ngắn thời gian giao hàng 30%" data-en="Implemented Scrum methodology to manage project lifecycles, resulting in 30% faster delivery times">Triển khai phương pháp Scrum để quản lý vòng đời dự án, rút ngắn thời gian giao hàng 30%</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Mục kinh nghiệm 2 -->
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-year">2022 - Hiện tại</div>
+                        <h3 class="timeline-title" data-vi="Quản Lý Dự Án & Phân Tích Nghiệp Vụ" data-en="Project Manager & Business Analyst">Quản Lý Dự Án & Phân Tích Nghiệp Vụ</h3>
+                        <div class="timeline-company">Menard Vietnam (menard.vn)</div>
+                        <div class="timeline-desc">
+                            <ul>
+                                <li data-vi="Lãnh đạo việc phát triển và triển khai nền tảng thương mại điện tử và hệ thống quản lý nội bộ của công ty" data-en="Led the development and implementation of the company's e-commerce platform and internal management systems">Lãnh đạo việc phát triển và triển khai nền tảng thương mại điện tử và hệ thống quản lý nội bộ của công ty</li>
+                                <li data-vi="Tạo luồng quy trình và hành trình người dùng để tối ưu hóa trải nghiệm khách hàng" data-en="Created process flows and user journeys to optimize customer experience">Tạo luồng quy trình và hành trình người dùng để tối ưu hóa trải nghiệm khách hàng</li>
+                                <li data-vi="Phối hợp với các nhóm phát triển để triển khai giải pháp thanh toán tích hợp" data-en="Collaborated with development teams to implement integrated payment solutions">Phối hợp với các nhóm phát triển để triển khai giải pháp thanh toán tích hợp</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Mục kinh nghiệm 3 -->
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-year">2023 - Hiện tại</div>
+                        <h3 class="timeline-title" data-vi="Quản Lý Dự Án & Phân Tích Nghiệp Vụ" data-en="Project Manager & Business Analyst">Quản Lý Dự Án & Phân Tích Nghiệp Vụ</h3>
+                        <div class="timeline-company">Facial Bar (facialbar.vn)</div>
+                        <div class="timeline-desc">
+                            <ul>
+                                <li data-vi="Chỉ đạo việc phát triển hệ thống quản lý dịch vụ và đặt lịch cho dịch vụ làm đẹp chuyên biệt này" data-en="Directed the development of service management and booking systems for this specialized beauty service">Chỉ đạo việc phát triển hệ thống quản lý dịch vụ và đặt lịch cho dịch vụ làm đẹp chuyên biệt này</li>
+                                <li data-vi="Triển khai giải pháp thanh toán tích hợp và hệ thống quản lý quan hệ khách hàng" data-en="Implemented integrated payment solutions and customer relationship management systems">Triển khai giải pháp thanh toán tích hợp và hệ thống quản lý quan hệ khách hàng</li>
+                                <li data-vi="Thiết kế bảng điều khiển báo cáo cho ban quản lý để theo dõi các chỉ số hiệu suất chính" data-en="Designed reporting dashboards for management to track key performance indicators">Thiết kế bảng điều khiển báo cáo cho ban quản lý để theo dõi các chỉ số hiệu suất chính</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Mục kinh nghiệm 4 -->
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-year">2023 - Hiện tại</div>
+                        <h3 class="timeline-title" data-vi="Dự Án Cá Nhân" data-en="Personal Project">Dự Án Cá Nhân</h3>
+                        <div class="timeline-company">AI Chatbot (hn1738.io.vn)</div>
+                        <div class="timeline-desc">
+                            <ul>
+                                <li data-vi="Lên ý tưởng và phát triển giải pháp chatbot AI cho tự động hóa dịch vụ khách hàng" data-en="Conceptualized and developed an AI-powered chatbot solution for customer service automation">Lên ý tưởng và phát triển giải pháp chatbot AI cho tự động hóa dịch vụ khách hàng</li>
+                                <li data-vi="Phối hợp với các nhà phát triển AI để triển khai thuật toán máy học" data-en="Collaborated with AI developers to implement machine learning algorithms">Phối hợp với các nhà phát triển AI để triển khai thuật toán máy học</li>
+                                <li data-vi="Liên tục nâng cao chức năng dựa trên phản hồi của người dùng và dữ liệu hiệu suất" data-en="Continuously enhanced functionality based on user feedback and performance data">Liên tục nâng cao chức năng dựa trên phản hồi của người dùng và dữ liệu hiệu suất</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section - Phần kỹ năng -->
+    <section class="section" id="skills">
+        <div class="container">
+            <div class="section-title">
+                <h2 data-vi="Kỹ Năng" data-en="Skills">Kỹ Năng</h2>
+            </div>
+            <div class="skills-container">
+                <!-- Danh mục kỹ năng 1 -->
+                <div class="skill-category">
+                    <h3 data-vi="Phân tích Nghiệp vụ" data-en="Business Analysis">Phân tích Nghiệp vụ</h3>
+                    <div class="skill-item">
+                        <div class="skill-info">
+                            <span class="skill-name" data-vi="Thu thập yêu cầu" data-en="Requirements Gathering">Thu thập yêu cầu</span>
+                            <span class="skill-percent">95%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="95"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-info">
+                            <span class="skill-name" data-vi="Lập bản đồ quy trình" data-en="Process Mapping">Lập bản đồ quy trình</span>
+                            <span class="skill-percent">90%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="90"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-info">
+                            <span class="skill-name" data-vi="Tạo User Stories" data-en="User Story Creation">Tạo User Stories</span>
+                            <span class="skill-percent">85%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="85"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-info">
+                            <span class="skill-name" data-vi="BPMN" data-en="BPMN">BPMN</span>
+                            <span class="skill-percent">80%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="80"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Danh mục kỹ năng 2 -->
+                <div class="skill-category">
+                    <h3 data-vi="Quản lý Dự án" data-en="Project Management">Quản lý Dự án</h3>
+                    <div class="skill-item">
+                        <div class="skill-info">
+                            <span class="skill-name">Scrum</span>
+                            <span class="skill-percent">90%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="90"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-info">
+                            <span class="skill-name">Jira</span>
+                            <span class="skill-percent">95%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="95"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-info">
+                            <span class="skill-name" data-vi="Quản lý backlog" data-en="Backlog Management">Quản lý backlog</span>
+                            <span class="skill-percent">85%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="85"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-info">
+                            <span class="skill-name" data-vi="Phân bổ nguồn lực" data-en="Resource Allocation">Phân bổ nguồn lực</span>
+                            <span class="skill-percent">80%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="80"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Danh mục kỹ năng 3 -->
+                <div class="skill-category">
+                    <h3 data-vi="Kỹ năng Kỹ thuật" data-en="Technical Skills">Kỹ năng Kỹ thuật</h3>
+                    <div class="skill-item">
+                        <div class="skill-info">
+                            <span class="skill-name">SQL</span>
+                            <span class="skill-percent">85%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="85"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-info">
+                            <span class="skill-name" data-vi="Thiết kế cơ sở dữ liệu" data-en="Database Design">Thiết kế cơ sở dữ liệu</span>
+                            <span class="skill-percent">75%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="75"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-info">
+                            <span class="skill-name" data-vi="Tích hợp API" data-en="API Integration">Tích hợp API</span>
+                            <span class="skill-percent">70%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="70"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-info">
+                            <span class="skill-name" data-vi="Kiểm thử hệ thống" data-en="System Testing">Kiểm thử hệ thống</span>
+                            <span class="skill-percent">80%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="80"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section - Phần liên hệ -->
+    <section class="section" id="contact">
+        <div class="container">
+            <div class="section-title">
+                <h2 data-vi="Liên Hệ" data-en="Contact">Liên Hệ</h2>
+            </div>
+            <div class="contact-container">
+                <!-- Thông tin liên hệ -->
+                <div class="contact-info">
+                    <h3 class="contact-title" data-vi="Thông Tin Liên Hệ" data-en="Contact Information">Thông Tin Liên Hệ</h3>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h4 data-vi="Email" data-en="Email">Email</h4>
+                            <p><a href="mailto:huypq2607@gmail.com">huypq2607@gmail.com</a></p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone-alt"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h4 data-vi="Điện Thoại" data-en="Phone">Điện Thoại</h4>
+                            <p><a href="tel:0972617963">097.261.7963</a></p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h4 data-vi="Địa Chỉ" data-en="Location">Địa Chỉ</h4>
+                            <p data-vi="Hà Nội, Việt Nam" data-en="Hanoi, Vietnam">Hà Nội, Việt Nam</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Thông tin dự án -->
+                <div class="contact-info">
+                    <h3 class="contact-title" data-vi="Dự Án" data-en="Projects">Dự Án</h3>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-cut"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h4>30Shine</h4>
+                            <p data-vi="Hệ thống quản lý Nhân sự - Dịch vụ - Thanh toán" data-en="HR - Services - Payment Management System">Hệ thống quản lý Nhân sự - Dịch vụ - Thanh toán</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-shopping-bag"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h4>Menard Vietnam</h4>
+                            <p><a href="https://menard.vn" target="_blank">menard.vn</a></p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-spa"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h4>Facial Bar</h4>
+                            <p><a href="https://facialbar.vn" target="_blank">facialbar.vn</a></p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h4>AI Chatbot</h4>
+                            <p><a href="https://hn1738.io.vn" target="_blank">hn1738.io.vn</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer - Phần chân trang -->
+    <footer>
+        <div class="container">
+            <p data-vi="&copy; 2025 Phạm Quang Huy. Đã đăng ký bản quyền." data-en="&copy; 2025 Pham Quang Huy. All rights reserved.">&copy; 2025 Phạm Quang Huy. Đã đăng ký bản quyền.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Preloader - hiện và ẩn khi trang tải xong
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.querySelector('.preloader').classList.add('fade-out');
+            }, 500);
+        });
+
+        // Nút menu trên mobile - mở/đóng menu
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const navLinks = document.querySelector('.nav-links');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // Cuộn mượt khi nhấp vào menu
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+                // Đóng menu mobile sau khi nhấp vào
+                if (navLinks.classList.contains('active')) {
+                    navLinks.classList.remove('active');
+                }
+            });
+        });
+
+        // Hiệu ứng header khi cuộn trang
+        const header = document.querySelector('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Chuyển đổi chế độ sáng/tối
+        const themeToggle = document.querySelector('.toggle-theme');
+        const body = document.body;
+
+        themeToggle.addEventListener('click', () => {
+            if (body.getAttribute('data-theme') === 'light') {
+                body.setAttribute('data-theme', 'dark');
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            } else {
+                body.setAttribute('data-theme', 'light');
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+            }
+        });
+
+        // Chuyển đổi ngôn ngữ Vi/En
+        const langToggle = document.querySelector('.toggle-lang');
+        const langElements = document.querySelectorAll('[data-vi][data-en]');
+
+        langToggle.addEventListener('click', () => {
+            const currentLang = body.getAttribute('data-lang');
+            const newLang = currentLang === 'vi' ? 'en' : 'vi';
+            
+            body.setAttribute('data-lang', newLang);
+            
+            // Cập nhật nội dung cho tất cả phần tử có thuộc tính data-vi và data-en
+            langElements.forEach(el => {
+                const newText = el.getAttribute(`data-${newLang}`);
+                if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                    el.placeholder = newText;
+                } else {
+                    el.innerHTML = newText;
+                }
+            });
+            
+            // Cập nhật nút chuyển đổi ngôn ngữ
+            langToggle.textContent = newLang === 'vi' ? 'EN' : 'VI';
+        });
+
+        // Hiệu ứng hiển thị các section khi cuộn đến
+        const sections = document.querySelectorAll('.section');
+        
+        const sectionObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        sections.forEach(section => {
+            sectionObserver.observe(section);
+        });
+
+        // Hiệu ứng thanh tiến trình kỹ năng
+        const skillProgressBars = document.querySelectorAll('.skill-progress');
+        
+        const skillObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const width = entry.target.getAttribute('data-width');
+                    entry.target.style.width = `${width}%`;
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        skillProgressBars.forEach(bar => {
+            skillObserver.observe(bar);
+        });
+
+        // Hiệu ứng hiển thị timeline
+        const timelineItems = document.querySelectorAll('.timeline-item');
+        
+        const timelineObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.style.animation = 'fadeIn 0.5s ease forwards';
+                    }, index * 200); // Tạo hiệu ứng hiển thị lần lượt
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        timelineItems.forEach(item => {
+            timelineObserver.observe(item);
+        });
+    </script>
+</body>
+</html>
