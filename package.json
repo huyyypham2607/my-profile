@@ -1,12 +1,14 @@
 {
   "name": "my-profile",
   "version": "1.0.0",
-  "main": "index.js",
+  "description": "Hồ sơ cá nhân của Huy Phạm",
+  "main": "CV_HuyPQ.html",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npx http-server",
+    "dev": "npx http-server -o CV_HuyPQ.html"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": ""
+  "keywords": ["profile", "cv", "resume"],
+  "author": "Huy Pham",
+  "license": "ISC"
 }
