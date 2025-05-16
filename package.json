@@ -2,11 +2,11 @@
   "name": "my-profile",
   "version": "1.0.0",
   "description": "Hồ sơ cá nhân của Huy Phạm",
-  "main": "CV_HuyPQ.html",
+  "main": "index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "npx http-server",
-    "dev": "npx http-server -o CV_HuyPQ.html"
+    "dev": "npx http-server -o"
   },
   "keywords": ["profile", "cv", "resume"],
   "author": "Huy Pham",
